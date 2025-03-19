@@ -1,5 +1,3 @@
-
-
 <form action="{% url 'polls:votes' question.id %}" method="post">
     {% csrf_token %} <!-- Todos os formularios que usam o método post
     essa tag de templete para a proteção -->
@@ -12,8 +10,8 @@
         </strong></p> {% endif %}
         {% for choice in question.choice_set.all %}
         <input type="radio" name="choice" id="choice{{ forloop.counter }}"
-        value=" {{choice.id }}">
-        <label for="choice {{ forloop.counter}}"> 
+        value=" {{choice.id}}">
+        <label for="choice {{ forloop.counter}}"> <!-- Contagem de quantas vezes a tag for passou pelo loop-->
             {{choice.choice_text}}
         </label><br>
         {% endfor %}

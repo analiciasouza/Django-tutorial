@@ -1,0 +1,9 @@
+body {
+    background-color: rgba(37, 201, 234, 0.411);
+}
+
+li a{
+    font-size: 1.25rem;
+    color: black;
+    text-decoration: none;
+}
