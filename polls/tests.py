@@ -6,6 +6,16 @@ from django.urls import reverse
 
 
 # Create your tests here.
+
+
+def create_question(question_text, days):
+    time = timezone.now() + datetime.timedelta(days=days)
+    return Question.objects.create(question_text= question_text, pub_date=time)
+
+def create_choices(question):
+    return Choice.objects.create(question=0)
+
+    
 class QuestionModelTests(TestCase):
     def test_was_published_recently_with_future_question(self):
         time = timezone.now() + datetime.timedelta(days=30)
@@ -25,12 +35,6 @@ class QuestionModelTests(TestCase):
 
         self.assertIs(recent_question.published_recently(), True)
 
-    def create_question(question_text, days):
-        time = timezone.now() + datetime.timedelta(days=days)
-        return Question.objects.create(question_text= question_text, pub_date=time)
-    
-    def create_choices(question):
-        return Choice.objects.create(question=0)
 
 
 class QuestionIndexViewTests(TestCase):
@@ -64,7 +68,7 @@ class QuestionIndexViewTests(TestCase):
           self.assertQuerySetEqual(response.context["question_list"], [question2, question1])
       
       def test_questions_no_choice(self):
-          choice = create_choices(question=0)
+          choice = create_choices(question=None)
           response = self.client.get(reverse("polls:index"))
           self.assertQuerySetEqual(response.context["question_list"], [])
 
@@ -82,7 +86,7 @@ class QuestionDetailViewTests(TestCase):
           url = reverse("polls:detail", args=(past_question.id,))
           response = self.client.get(url)
 
-          self.assertContains(response, past_question.question_test)
+          self.assertContains(response, past_question.question_text)
 
       
 
@@ -99,6 +103,6 @@ class QuestionResultsViewTests(TestCase):
           url = reverse("polls:results", args=(past_question.id,))
           response = self.client.get(url)
 
-          self.assertContains(response, past_question.question_test)
+          self.assertContains(response, past_question.question_text)
 
 

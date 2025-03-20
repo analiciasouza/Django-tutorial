@@ -1,11 +1,18 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib import admin
 import datetime
 
 # Create your models here.
 class Question(models.Model):
     question_text = models.CharField(max_length=255)
     pub_date = models.DateTimeField("Date Published")
+
+    @admin.display(
+            boolean=True,
+            ordering="pub_date",
+            description="Published recently?"
+    )
 
     def __str__(self):
         return self.question_text
@@ -14,7 +21,6 @@ class Question(models.Model):
         now = timezone.now()
         return  now - datetime.timedelta(days=1) <= self.pub_date <= now
     
-
 
 class Choice(models.Model):
       question = models.ForeignKey(Question, on_delete=models.CASCADE)
